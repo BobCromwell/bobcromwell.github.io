@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.62.0" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RTP FEC &middot; 无名 博客</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://bobcromwell.github.io/"><h1>无名 博客</h1></a>
+      <p class="lead">
+       记录一些想法 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://bobcromwell.github.io/">Home</a> </li>
+        <li><a href="/about/"> About </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>RTP FEC</h1>
+  <time datetime=2017-03-21T16:58:41Z class="post-date">Tue, Mar 21, 2017</time>
+  <h1 id="heading">简介</h1>
+<p>FEC 是一种抗丢包方法，就是多发一些冗余数据</p>
+<p>FEC 可以工作在如下层次</p>
+<ol>
+<li>RTP</li>
+<li>编码器</li>
+</ol>
+<h2 id="rtp-fec">RTP FEC</h2>
+<p>定义在 RFC 5109, 基本思路就是多个 RTP 包计算异或（或者计算其他方式），做为冗余包</p>
+<h2 id="codec-fec">Codec FEC</h2>
+<p>一般只有部分音频编码器有这个特性，比如 Opus</p>
+<h1 id="heading-1">比较</h1>
+<h2 id="codec-fec-1">Codec FEC</h2>
+<h3 id="heading-2">优点</h3>
+<ol>
+<li>Opus 会检测哪些包重要，比如某段是说话而不是静音。针对内容是否重要，再加 FEC 效率更高。</li>
+</ol>
+<h3 id="heading-3">缺点</h3>
+<ol>
+<li>只提供单个包的保护，如果需要多个包的保护（ 应对 burst 丢包），需要使用 6354 规定的 RED</li>
+</ol>
+<ul>
+<li>RFC 6354 是对 RFC 2198 的扩展， 2198 只支持先发原始包，再发冗余包；6354 支持先发冗余包 *</li>
+</ul>
+<h2 id="rtp-fec-1">RTP FEC</h2>
+<h3 id="heading-4">优点</h3>
+<ol>
+<li>和编码格式无关，更通用</li>
+<li>提供多个包的保护</li>
+</ol>
+<h3 id="heading-5">缺点</h3>
+<ol>
+<li>Overhead 多。一个音频帧即使加上 Codec FEC 也还是可以放到一个 RTP 包里。RTP 层的 FEC 则需要单个 RTP 包来发送 。需要 IP + UDP + RTP + FEC 等 Header</li>
+<li>FEC 效率相对低</li>
+</ol>
+<h1 id="heading-6">总结</h1>
+<p>音频如果编码器支持，推荐 Codec FEC</p>
+<p>对于视频推荐使用 RTP FEC</p>
+<ol>
+<li>常见视频编码器没有发现支持 Codec FEC 的</li>
+<li>视频数据比音频大很多，一个视频帧通常会需要多个 RTP 包传输。相比而言 RTP 包头的开销就不大了</li>
+</ol>
+<p>Reference:</p>
+<ol>
+<li><a href="https://tools.ietf.org/html/draft-ietf-rtcweb-fec-04">https://tools.ietf.org/html/draft-ietf-rtcweb-fec-04</a></li>
+<li><a href="http://www.rfc-editor.org/info/rfc6354">http://www.rfc-editor.org/info/rfc6354</a></li>
+<li><a href="https://tools.ietf.org/html/rfc5109">https://tools.ietf.org/html/rfc5109</a></li>
+</ol>
+
+</div>
+
+
+    </main>
+
+    
+  </body>
+</html>

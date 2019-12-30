@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.62.0" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RTP Header Extension &middot; 无名 博客</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://bobcromwell.github.io/"><h1>无名 博客</h1></a>
+      <p class="lead">
+       记录一些想法 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://bobcromwell.github.io/">Home</a> </li>
+        <li><a href="/about/"> About </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>RTP Header Extension</h1>
+  <time datetime=2017-06-03T17:44:48Z class="post-date">Sat, Jun 3, 2017</time>
+  <h1 id="heading">简介</h1>
+<p>RTP Header Extension 提供了一种扩展RTP Header 的方法。</p>
+<p>RTP Header Extension位于在 RTP 包中CSRC之后</p>
+<h1 id="heading-1">格式</h1>
+<p>RFC 5285 定义了Header Extension 的具体格式，包括两种</p>
+<ol>
+<li>One Byte Format</li>
+<li>Two Byte Format</li>
+</ol>
+<p>WebRTC M56 只实现了 One Byte Format。具体实现在文件rtp_utility.cc 中。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++"><span style="color:#66d9ef">bool</span> RtpHeaderParser<span style="color:#f92672">:</span><span style="color:#f92672">:</span>Parse(RTPHeader<span style="color:#f92672">*</span> header,
+                            RtpHeaderExtensionMap<span style="color:#f92672">*</span> ptrExtensionMap) <span style="color:#66d9ef">const</span> {
+<span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span> (X) { <span style="color:#75715e">// RTP Header中 X 字段(1 bit)为1时表示有Header Extension 
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">/* RTP header extension, RFC 3550.
+</span><span style="color:#75715e">     0                   1                   2                   3
+</span><span style="color:#75715e">     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+</span><span style="color:#75715e">    +-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-+
+</span><span style="color:#75715e">    |      defined by profile       |           length              |
+</span><span style="color:#75715e">    +-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-+
+</span><span style="color:#75715e">    |                        header extension                       |
+</span><span style="color:#75715e">    |                             ....                              |
+</span><span style="color:#75715e">    */</span>
+    <span style="color:#75715e">// ... 
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">constexpr</span> <span style="color:#66d9ef">uint16_t</span> kRtpOneByteHeaderExtensionId <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xBEDE</span>;
+    <span style="color:#66d9ef">if</span> (definedByProfile <span style="color:#f92672">=</span><span style="color:#f92672">=</span> kRtpOneByteHeaderExtensionId) {
+      <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">*</span> ptrRTPDataExtensionEnd <span style="color:#f92672">=</span> ptr <span style="color:#f92672">+</span> XLen;
+      ParseOneByteExtensionHeader(header,
+                                  ptrExtensionMap,
+                                  ptrRTPDataExtensionEnd,
+                                  ptr);
+    }
+ } 
+<span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>} 
+</code></pre></div><h1 id="heading-2">参考</h1>
+<p>1.https://tools.ietf.org/html/rfc5285</p>
+
+</div>
+
+
+    </main>
+
+    
+  </body>
+</html>

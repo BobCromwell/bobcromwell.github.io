@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.62.0" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>分布式一致性 &middot; 无名 博客</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://bobcromwell.github.io/"><h1>无名 博客</h1></a>
+      <p class="lead">
+       记录一些想法 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://bobcromwell.github.io/">Home</a> </li>
+        <li><a href="/about/"> About </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>分布式一致性</h1>
+  <time datetime=2019-12-30T00:00:00&#43;0800 class="post-date">Mon, Dec 30, 2019</time>
+  <h2 id="严格一致性">严格一致性</h2>
+<p>Strict Consistency</p>
+<p>一个服务节点对某个状态的写入, 瞬时可以被另外一个服务器同步复制。<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+<p>没有看到定义的严格出处，理论上也不可能实现。</p>
+<h2 id="线性">线性</h2>
+<p>Linearizability，也称为 strong consistency 或者 atomic consistency</p>
+<p>可以说是我们能够实现的最高的一致性模型. 它是 Herlihy and Wing 在 1987 年提出的 <!-- raw HTML omitted --><!-- raw HTML omitted -->herlihy90_linear<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>要求比顺序一致性高</p>
+<ol>
+<li>Linearizability 要求保留如下偏序关系：如果 A 的返回在 B 调用之前，A &lt; B</li>
+</ol>
+<p>与之相反</p>
+<ol>
+<li>Sequential Consistency 不要求“原”历史的顺序被保留（可以&quot;错&quot;的一致）</li>
+</ol>
+<h2 id="顺序一致性">顺序一致性</h2>
+<p>Sequential Consistency,Lamport 1979 年提出 <!-- raw HTML omitted --><!-- raw HTML omitted -->lamport1979how<!-- raw HTML omitted --><!-- raw HTML omitted --> 是论述多处理器的一致性时提出的</p>
+<p>一个不严谨的解释如下 <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+<ol>
+<li>事件历史在各个进程上看全局一致</li>
+<li>单个进程的事件历史在全局历史上符合程序顺序(program order)</li>
+</ol>
+<h2 id="因果一致性">因果一致性</h2>
+<p>Causal_consistency</p>
+<p>弱于顺序一致性，只要求有“因果”关系的“写”被全部进程一致观察到<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<p>Wiki 条码中提到了 Session Guarantees <!-- raw HTML omitted --><!-- raw HTML omitted -->Terry_1994_SGW<!-- raw HTML omitted --><!-- raw HTML omitted --> 但我感觉不是一个事情。比如明显 “Read Your Write” 没有考虑多个进程之间的一致性。</p>
+<p>工业界经常混谈两者。比如 MongoDB 官网这篇文章 <sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup></p>
+<h2 id="强一致性">强一致性</h2>
+<blockquote>
+<p>Strong consistency. After the update completes, any subsequent access (by A, B, or C) will return the updated value.</p>
+</blockquote>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->vogels09_event_consis<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h2 id="最终一致性">最终一致性</h2>
+<p>Eventual Consistency 最早由 Amazon 的 CTO 提出<!-- raw HTML omitted --><!-- raw HTML omitted -->vogels09_event_consis<!-- raw HTML omitted --><!-- raw HTML omitted -->。</p>
+<p>这篇文章一开始就指出了，最终分布式系统追求的对外部的透明性（在外部看来是单一系统）是不可行的。</p>
+<p>因为 CAP 原理，在网络分区发生时，需要在可用和一致之间取舍。大部分应用场景需要的是可用。所以需要弱的一致性。并且外部需要了解系统的一致性级别。</p>
+<p>从 Client 角度，把最终一致性划入了弱一致性（Weak Consistent，与之相对的是强一致性）。而在不一致的窗口期的表现，划分为</p>
+<ol>
+<li>因果一致</li>
+<li>read your write</li>
+<li>会话一致性</li>
+<li>单调读</li>
+<li>单调写</li>
+</ol>
+<p>以上和 1994 年 Terry 等提出 Session Guarantees 类似<!-- raw HTML omitted --><!-- raw HTML omitted -->Terry_1994_SGW<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<ol>
+<li>Read Your Write</li>
+<li>Monotonic Reads</li>
+<li>Writes Follow Reads</li>
+<li>Monotonic Writes</li>
+</ol>
+<p>从 Server 角度，描述了一下 N、W、R 的不同配置的影响</p>
+<p>N：节点数
+W：写操作需要多少各节点确认后才能返回
+R：读操作需要从多少个节点上读</p>
+<p>R 一般为 1，原因是读的性能，其次是读的合并比较难，比如读若干个数据</p>
+<p>总结：</p>
+<ol>
+<li>文章偏近工程</li>
+<li>最终一致就是说会*不*一致，不一致期间的保证就各不相同了</li>
+</ol>
+<h2 id="总结">总结</h2>
+<p>一致性术语比较混乱，缺乏完全的学术定义</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p><a href="https://danielw.cn/history-of-distributed-systems-1">https://danielw.cn/history-of-distributed-systems-1</a> <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p><a href="https://en.wikipedia.org/wiki/Causal%5Fconsistency">https://en.wikipedia.org/wiki/Causal%5Fconsistency</a> <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p><a href="https://engineering.mongodb.com/post/ryp0ohr2w9pvv0fks88kq6qkz9k9p3">https://engineering.mongodb.com/post/ryp0ohr2w9pvv0fks88kq6qkz9k9p3</a> 主要描述了 MongoDB 不同读写 Concern 的区别 <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+</div>
+
+
+    </main>
+
+    
+  </body>
+</html>

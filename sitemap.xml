@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://bobcromwell.github.io/posts/</loc>
+    <lastmod>2019-12-30T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bobcromwell.github.io/posts/distribute_consistency/</loc>
+    <lastmod>2019-12-30T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bobcromwell.github.io/</loc>
+    <lastmod>2019-12-30T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bobcromwell.github.io/posts/rtp-header-extension/</loc>
+    <lastmod>2017-06-03T17:44:48+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bobcromwell.github.io/posts/agc/</loc>
+    <lastmod>2017-04-28T18:52:10+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bobcromwell.github.io/posts/sig-slot/</loc>
+    <lastmod>2017-04-01T15:59:34+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bobcromwell.github.io/posts/rtp-av-sync/</loc>
+    <lastmod>2017-03-30T16:17:22+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bobcromwell.github.io/posts/rtp-fec/</loc>
+    <lastmod>2017-03-21T16:58:41+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bobcromwell.github.io/posts/rtp_rtcp_mux/</loc>
+    <lastmod>2017-03-21T14:58:16+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bobcromwell.github.io/posts/rtp_timestamp/</loc>
+    <lastmod>2017-02-28T17:36:37+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bobcromwell.github.io/about/</loc>
+    <lastmod>2017-02-28T14:53:43+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bobcromwell.github.io/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>https://bobcromwell.github.io/tags/</loc>
+  </url>
+  
+</urlset>

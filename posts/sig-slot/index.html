@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.62.0" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>sig_slot &middot; 无名 博客</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://bobcromwell.github.io/"><h1>无名 博客</h1></a>
+      <p class="lead">
+       记录一些想法 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://bobcromwell.github.io/">Home</a> </li>
+        <li><a href="/about/"> About </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>sig_slot</h1>
+  <time datetime=2017-04-01T15:59:34Z class="post-date">Sat, Apr 1, 2017</time>
+  <h1 id="heading">引言</h1>
+<p>主要讲 WebRTC 代码中使用的 sigslot <a href="http://sigslot.sourceforge.net/">http://sigslot.sourceforge.net/</a></p>
+<p>Qt 有类似的机制，需要使用预处理 MOC（Meta Object Compiler） 来实现。</p>
+<h1 id="heading-1">基本概念</h1>
+<p>sig，信号， 发出消息 slot,槽 接收消息</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Switch</span>
+ {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+  signal0<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span> Clicked; 
+};
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Light</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> has_slots<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span>
+{
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+  <span style="color:#66d9ef">void</span> ToggleState();
+  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">TurnOn</span>();
+  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">TurnOff</span>();
+};
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>()
+{
+  Switch switch_inst;
+  Light light;
+  switch_inst.Clicked.connect(<span style="color:#f92672">&amp;</span>light, <span style="color:#f92672">&amp;</span>Light<span style="color:#f92672">:</span><span style="color:#f92672">:</span>ToggleState);
+  swicth.clicked.emit()
+}
+</code></pre></div><h1 id="heading-2">作用</h1>
+<ol>
+<li>解耦</li>
+</ol>
+<h1 id="heading-3">实现</h1>
+<h2 id="heading-4">同步／异步</h2>
+<p>实现机制上是同步, 但是注意 emmit 返回值为 void。同时注意 m_pmemfun 的定义，指明被绑定的成员函数返回值是 void</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c++" data-lang="c++"><span style="color:#75715e">// 
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">_connection0</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> _connection_base0<span style="color:#f92672">&lt;</span>mt_policy<span style="color:#f92672">&gt;</span>
+  {
+    <span style="color:#75715e">// ...            
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">emit</span>()
+    {
+      (m_pobject<span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">*</span>m_pmemfun)();
+    }
+
+  <span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
+    dest_type<span style="color:#f92672">*</span> m_pobject;
+    <span style="color:#66d9ef">void</span> (dest_type<span style="color:#f92672">:</span><span style="color:#f92672">:</span><span style="color:#f92672">*</span> m_pmemfun)();
+  };
+</code></pre></div><h2 id="heading-5">执行线程</h2>
+<p>同步调用，调用执行在同一线程。</p>
+<h2 id="heading-6">对象生命周期</h2>
+<p>保证不发生调用已被销毁的对象有两个办法</p>
+<ol>
+<li>使用 shared_poiter 智能指针，增加引用计数，保证不会析构，但是要注意都使用强引用会带来循环引用。</li>
+<li>析构后会自动解除绑定关系。</li>
+</ol>
+<p>sig slot 库采用的是第二种方法</p>
+<p>集成 has_slot 的类，在 connect 的时候会保存 signal，在析构时自动 disconnect。</p>
+<p>上述描述中可以看出：signal 析构时，也需要告诉关联 has_slot 实例，否则上述过程中会 crash。</p>
+<h2 id="heading-7">线程安全</h2>
+<p>上述过程自动 disconnect 等过程，要求 signal 和 has_slot 实例都有状态，需要考虑多线程问题。</p>
+<ol>
+<li>无锁。调用方保证相联的实例都在同一线程或者没有争用。</li>
+<li>全局唯一锁。所有相关操作使用同一个锁，可能的问题是有些地方不必要的等待。</li>
+<li>每个 signal 或者 has_slot 实例一个锁。这个选项会创建很多锁，某些平台创建很多锁会有性能问题，需要谨慎使用。</li>
+</ol>
+<h1 id="reference">Reference</h1>
+<ol>
+<li><a href="http://blog.csdn.net/smallcraft/article/details/2237802">http://blog.csdn.net/smallcraft/article/details/2237802</a></li>
+</ol>
+
+</div>
+
+
+    </main>
+
+    
+  </body>
+</html>

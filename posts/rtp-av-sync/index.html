@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.62.0" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RTP 音视频同步 &middot; 无名 博客</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://bobcromwell.github.io/"><h1>无名 博客</h1></a>
+      <p class="lead">
+       记录一些想法 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://bobcromwell.github.io/">Home</a> </li>
+        <li><a href="/about/"> About </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>RTP 音视频同步</h1>
+  <time datetime=2017-03-30T16:17:22Z class="post-date">Thu, Mar 30, 2017</time>
+  <h1 id="heading">简述</h1>
+<p>音视频同步，顾名思义需要音视频数据映射到一个时间轴上。但是如 <a href="/posts/rtp_timestamp/">RTP 时间戳</a> 一文所介绍的，音视频的时钟频率是不同的。</p>
+<p>那么 RTP 协议中如何做音频音视频同步呢？</p>
+<p>一言以蔽之是把音视频 RTP 的 Timestamp 都映射到 NTP 时间。NTP 时间可以简单理解为生活中熟悉的当前是几点几分几秒。</p>
+<h1 id="heading-1">实现</h1>
+<p>有两个关键的 RTCP 包类型</p>
+<ol>
+<li>SR: Sender Report</li>
+<li>SDES: Source Description</li>
+</ol>
+<h2 id="sr">SR</h2>
+<p>发送方会定期发送 Sender Report，其中包含对应的 NTP 和 RTP TimeStamp。</p>
+<p>Sender Report 是一种 RTCP 包，参考 WebRTC M57 代码 sender_report.h其中相关代码如下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">class SenderReport : public RtcpPacket {
+<span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>private:
+  NtpTime ntp_;
+  uint32_t rtp_timestamp_;
+<span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+</code></pre></div><h2 id="sdes">SDES</h2>
+<p>由于RTP 协议中一个发送者的SSRC 中一次会话过程中可以改变，为了确定哪两个音视频流来自都一个发送者，也就是需要同步，就用到了SDES。 参考 WebRTC M57 代码 sdes.h其中相关代码如下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">class Sdes : public RtcpPacket {
+<span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>public:
+  <span style="color:#66d9ef">struct</span> Chunk {
+    uint32_t ssrc;
+    std<span style="color:#f92672">:</span><span style="color:#f92672">:</span>string cname;
+  };
+<span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>private:
+  std<span style="color:#f92672">:</span><span style="color:#f92672">:</span>vector<span style="color:#f92672">&lt;</span>Chunk<span style="color:#f92672">&gt;</span> chunks_;
+</code></pre></div><p>cname 在整个会话过程中不会改变。</p>
+<h1 id="heading-2">说明</h1>
+<p>实际实现音视频同步时，还需要考虑 playout buffer 带来的音视频的延迟。之后单写一个  playout buffer 的文章。</p>
+
+</div>
+
+
+    </main>
+
+    
+  </body>
+</html>

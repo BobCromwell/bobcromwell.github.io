@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>无名 博客</title>
+    <link>https://bobcromwell.github.io/</link>
+    <description>Recent content on 无名 博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 30 Dec 2019 00:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://bobcromwell.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>分布式一致性</title>
+      <link>https://bobcromwell.github.io/posts/distribute_consistency/</link>
+      <pubDate>Mon, 30 Dec 2019 00:00:00 +0800</pubDate>
+      
+      <guid>https://bobcromwell.github.io/posts/distribute_consistency/</guid>
+      <description>严格一致性 Strict Consistency
+一个服务节点对某个状态的写入, 瞬时可以被另外一个服务器同步复制。1
+没有看到定义的严格出处，理论上也不可能实现。
+线性 Linearizability，也称为 strong consistency 或者 atomic consistency
+可以说是我们能够实现的最高的一致性模型. 它是 Herlihy and Wing 在 1987 年提出的 herlihy90_linear要求比顺序一致性高
+ Linearizability 要求保留如下偏序关系：如果 A 的返回在 B 调用之前，A &amp;lt; B  与之相反
+ Sequential Consistency 不要求“原”历史的顺序被保留（可以&amp;quot;错&amp;quot;的一致）  顺序一致性 Sequential Consistency,Lamport 1979 年提出 lamport1979how是论述多处理器的一致性时提出的
+一个不严谨的解释如下 1
+ 事件历史在各个进程上看全局一致 单个进程的事件历史在全局历史上符合程序顺序(program order)  因果一致性 Causal_consistency
+弱于顺序一致性，只要求有“因果”关系的“写”被全部进程一致观察到2
+Wiki 条码中提到了 Session Guarantees Terry_1994_SGW但我感觉不是一个事情。比如明显 “Read Your Write” 没有考虑多个进程之间的一致性。
+工业界经常混谈两者。比如 MongoDB 官网这篇文章 3
+强一致性  Strong consistency.</description>
+    </item>
+    
+    <item>
+      <title>RTP Header Extension</title>
+      <link>https://bobcromwell.github.io/posts/rtp-header-extension/</link>
+      <pubDate>Sat, 03 Jun 2017 17:44:48 +0000</pubDate>
+      
+      <guid>https://bobcromwell.github.io/posts/rtp-header-extension/</guid>
+      <description>简介 RTP Header Extension 提供了一种扩展RTP Header 的方法。
+RTP Header Extension位于在 RTP 包中CSRC之后
+格式 RFC 5285 定义了Header Extension 的具体格式，包括两种
+ One Byte Format Two Byte Format  WebRTC M56 只实现了 One Byte Format。具体实现在文件rtp_utility.cc 中。
+bool RtpHeaderParser::Parse(RTPHeader* header, RtpHeaderExtensionMap* ptrExtensionMap) const { // ...  if (X) { // RTP Header中 X 字段(1 bit)为1时表示有Header Extension  /* RTP header extension, RFC 3550. 0 1 2 3 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 +-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-+ | defined by profile | length | +-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-+ | header extension | | .</description>
+    </item>
+    
+    <item>
+      <title>agc</title>
+      <link>https://bobcromwell.github.io/posts/agc/</link>
+      <pubDate>Fri, 28 Apr 2017 18:52:10 +0000</pubDate>
+      
+      <guid>https://bobcromwell.github.io/posts/agc/</guid>
+      <description>概述 自动增益控制
+增益 放大倍数 power out ／ power in
+一般加上对数，log（power out ／ power in）
+作用 AGC 可以自动调麦克风的收音量，使与会者收到一定的音量水平。不会因发言者与麦克风的距离改变时，声音忽大忽小。
+难点 人声、噪声区别，防止 AGC 放大噪声，WebRTC 代码中 Agc 模块依赖于VAD模块。
+Referece  https://zhuanlan.zhihu.com/p/24590492  </description>
+    </item>
+    
+    <item>
+      <title>sig_slot</title>
+      <link>https://bobcromwell.github.io/posts/sig-slot/</link>
+      <pubDate>Sat, 01 Apr 2017 15:59:34 +0000</pubDate>
+      
+      <guid>https://bobcromwell.github.io/posts/sig-slot/</guid>
+      <description>引言 主要讲 WebRTC 代码中使用的 sigslot http://sigslot.sourceforge.net/
+Qt 有类似的机制，需要使用预处理 MOC（Meta Object Compiler） 来实现。
+基本概念 sig，信号， 发出消息 slot,槽 接收消息
+class Switch { public: signal0&amp;lt;&amp;gt; Clicked; }; class Light : public has_slots&amp;lt;&amp;gt; { public: void ToggleState(); void TurnOn(); void TurnOff(); }; void main() { Switch switch_inst; Light light; switch_inst.Clicked.connect(&amp;amp;light, &amp;amp;Light::ToggleState); swicth.clicked.emit() } 作用  解耦  实现 同步／异步 实现机制上是同步, 但是注意 emmit 返回值为 void。同时注意 m_pmemfun 的定义，指明被绑定的成员函数返回值是 void
+// class _connection0 : public _connection_base0&amp;lt;mt_policy&amp;gt; { // .</description>
+    </item>
+    
+    <item>
+      <title>RTP 音视频同步</title>
+      <link>https://bobcromwell.github.io/posts/rtp-av-sync/</link>
+      <pubDate>Thu, 30 Mar 2017 16:17:22 +0000</pubDate>
+      
+      <guid>https://bobcromwell.github.io/posts/rtp-av-sync/</guid>
+      <description>简述 音视频同步，顾名思义需要音视频数据映射到一个时间轴上。但是如 RTP 时间戳 一文所介绍的，音视频的时钟频率是不同的。
+那么 RTP 协议中如何做音频音视频同步呢？
+一言以蔽之是把音视频 RTP 的 Timestamp 都映射到 NTP 时间。NTP 时间可以简单理解为生活中熟悉的当前是几点几分几秒。
+实现 有两个关键的 RTCP 包类型
+ SR: Sender Report SDES: Source Description  SR 发送方会定期发送 Sender Report，其中包含对应的 NTP 和 RTP TimeStamp。
+Sender Report 是一种 RTCP 包，参考 WebRTC M57 代码 sender_report.h其中相关代码如下
+class SenderReport : public RtcpPacket { // ... private: NtpTime ntp_; uint32_t rtp_timestamp_; // ... } SDES 由于RTP 协议中一个发送者的SSRC 中一次会话过程中可以改变，为了确定哪两个音视频流来自都一个发送者，也就是需要同步，就用到了SDES。 参考 WebRTC M57 代码 sdes.h其中相关代码如下</description>
+    </item>
+    
+    <item>
+      <title>RTP FEC</title>
+      <link>https://bobcromwell.github.io/posts/rtp-fec/</link>
+      <pubDate>Tue, 21 Mar 2017 16:58:41 +0000</pubDate>
+      
+      <guid>https://bobcromwell.github.io/posts/rtp-fec/</guid>
+      <description>简介 FEC 是一种抗丢包方法，就是多发一些冗余数据
+FEC 可以工作在如下层次
+ RTP 编码器  RTP FEC 定义在 RFC 5109, 基本思路就是多个 RTP 包计算异或（或者计算其他方式），做为冗余包
+Codec FEC 一般只有部分音频编码器有这个特性，比如 Opus
+比较 Codec FEC 优点  Opus 会检测哪些包重要，比如某段是说话而不是静音。针对内容是否重要，再加 FEC 效率更高。  缺点  只提供单个包的保护，如果需要多个包的保护（ 应对 burst 丢包），需要使用 6354 规定的 RED   RFC 6354 是对 RFC 2198 的扩展， 2198 只支持先发原始包，再发冗余包；6354 支持先发冗余包 *  RTP FEC 优点  和编码格式无关，更通用 提供多个包的保护  缺点  Overhead 多。一个音频帧即使加上 Codec FEC 也还是可以放到一个 RTP 包里。RTP 层的 FEC 则需要单个 RTP 包来发送 。需要 IP + UDP + RTP + FEC 等 Header FEC 效率相对低  总结 音频如果编码器支持，推荐 Codec FEC</description>
+    </item>
+    
+    <item>
+      <title>RTP RTCP 多路复用</title>
+      <link>https://bobcromwell.github.io/posts/rtp_rtcp_mux/</link>
+      <pubDate>Tue, 21 Mar 2017 14:58:16 +0000</pubDate>
+      
+      <guid>https://bobcromwell.github.io/posts/rtp_rtcp_mux/</guid>
+      <description>目的 通常 RTP 应用中，RTP 和 RTCP 是发送到不同的端口的。比如 RTP 发送到5004，RTCP 发送到5005。
+优点：
+ 可以把 RTP 单播给目标用户，RTCP 广播给目标用户和第三方监控系统  缺点：
+ NAT 存在的情况下，维护多个“链接”带来额外的复杂性  实现 RTP 和 RTCP 发到一个端口，接收端如何解复用呢？
+通过 RTP Mark + RTP PT = RTCP PT
+参考 webrtc 代码实现: M57 rtcpmuxfilter.cc 中关键代码
+bool RtcpMuxFilter::DemuxRtcp(const char* data, int len) { // If we&amp;#39;re muxing RTP/RTCP, we must inspect each packet delivered and  // determine whether it is RTP or RTCP. We do so by checking the packet type,  // and assuming RTP if type is 0-63 or 96-127.</description>
+    </item>
+    
+    <item>
+      <title>RTP Timestamp</title>
+      <link>https://bobcromwell.github.io/posts/rtp_timestamp/</link>
+      <pubDate>Tue, 28 Feb 2017 17:36:37 +0000</pubDate>
+      
+      <guid>https://bobcromwell.github.io/posts/rtp_timestamp/</guid>
+      <description>RTP Timestamp RTP 包中一个比较重要的字段。32 bit。以下简称为 TS
+音频 对于音频 TS 的单位是采样点的数量。具体而言，每个包的 timestamp 递增值为：包的时间长度 * 采样率，比如 20 ms 一个 RTP 包，采样率为 8k，每个 RTP 包的 TS 递增 160，也就是对应这个包里面有 160 个采样点。
+视频 视频和音频类似，视频没有采样率一说，一般固定为 90kHZ。
+30 帧 / 秒 的视频，每帧 TS 递增 90k / 30 = 3000 25 帧 / 秒 的视频，每帧 TS 递增 90k / 25 = 3600
+视频一帧可能超过 MTU，会被分到多个 RTP 包里，这几个 RTP 包使用相同的 TS。
+TS 不一定是线性递增的，比如使用 B frame 的场景
+SN 顺序是：I P B TS 顺序是： I B P</description>
+    </item>
+    
+    <item>
+      <title>关于</title>
+      <link>https://bobcromwell.github.io/about/</link>
+      <pubDate>Tue, 28 Feb 2017 14:53:43 +0000</pubDate>
+      
+      <guid>https://bobcromwell.github.io/about/</guid>
+      <description>个人信息  技术博客：http://bobcromwell.github.io Github：http://github.com/bobcromwell Mail：tianbaom@gmail.com  工具  Spacemacs  </description>
+    </item>
+    
+  </channel>
+</rss>

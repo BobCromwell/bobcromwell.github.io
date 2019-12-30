@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.62.0" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RTP Timestamp &middot; 无名 博客</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://bobcromwell.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://bobcromwell.github.io/"><h1>无名 博客</h1></a>
+      <p class="lead">
+       记录一些想法 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://bobcromwell.github.io/">Home</a> </li>
+        <li><a href="/about/"> About </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>RTP Timestamp</h1>
+  <time datetime=2017-02-28T17:36:37Z class="post-date">Tue, Feb 28, 2017</time>
+  <h1 id="rtp-timestamp">RTP Timestamp</h1>
+<p>RTP 包中一个比较重要的字段。32 bit。以下简称为 TS</p>
+<h2 id="heading">音频</h2>
+<p>对于音频 TS 的单位是采样点的数量。具体而言，每个包的 timestamp 递增值为：包的时间长度 * 采样率，比如 20 ms 一个 RTP 包，采样率为 8k，每个 RTP 包的 TS 递增 160，也就是对应这个包里面有 160 个采样点。</p>
+<h2 id="heading-1">视频</h2>
+<p>视频和音频类似，视频没有采样率一说，一般固定为 90kHZ。</p>
+<p>30 帧 / 秒 的视频，每帧 TS 递增 90k / 30 = 3000
+25 帧 / 秒 的视频，每帧 TS 递增 90k / 25 = 3600</p>
+<p>视频一帧可能超过 MTU，会被分到多个 RTP 包里，这几个 RTP 包使用相同的 TS。</p>
+<p>TS 不一定是线性递增的，比如使用 B frame 的场景</p>
+<p>SN 顺序是：I  P B
+TS 顺序是： I  B P</p>
+
+</div>
+
+
+    </main>
+
+    
+  </body>
+</html>
