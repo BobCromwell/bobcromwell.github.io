@@ -1,50 +1,29 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on 田宝明的博客</title><link>https://bobcromwell.github.io/posts/</link><description>Recent content in Posts on 田宝明的博客</description><generator>Hugo</generator><language>zh-Hans</language><atom:link href="https://bobcromwell.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>昂贵模型 v.s. 廉价模型</title><link>https://bobcromwell.github.io/posts/expensive_or_cheap_model/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://bobcromwell.github.io/posts/expensive_or_cheap_model/</guid><description>&lt;p&gt;&lt;img loading="lazy" src="https://bobcromwell.github.io/images/expensive-model-comparison.jpg"&gt;&lt;/p&gt;
-&lt;h2 id="之前的说法"&gt;之前的说法&lt;/h2&gt;
-&lt;p&gt;之前有一种说法是“要用最贵的模型”，比如 Anthropic 的 Opus&lt;/p&gt;
-&lt;p&gt;原因：最贵的模型 = 最聪明的模型&lt;/p&gt;
-&lt;p&gt;进一步说：针对某一个任务，最贵的模型一次就能完成。而使用廉价的模型，可能一次做不对，纠正几次之后，付出的时间和 token 成本超过了最贵的模型&lt;/p&gt;
-&lt;p&gt;而使用最贵的模型，就会承担&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;贵&lt;/li&gt;
-&lt;li&gt;慢&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="最近的感受"&gt;最近的感受&lt;/h2&gt;
-&lt;p&gt;但近期使用 DeepSeekV4Flash， 让我对这个观点有所反思，很多简单的任务（改 Emacs 配置、写一些 Python 脚本等）都能完成，且很快、很便宜&lt;/p&gt;
-&lt;h2 id="思考"&gt;思考&lt;/h2&gt;
-&lt;p&gt;即使是不需要人参与的任务，需求也是&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;对&lt;/li&gt;
-&lt;li&gt;省&lt;/li&gt;
-&lt;li&gt;快&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;只是现在便宜模型的能力追到了一个新的 baseline&lt;/p&gt;
-&lt;p&gt;但之后用 DeepSeekV4Flash 修改 OpenClaw 的配置，错了两次。这时就会觉得还不如一开始就用 GPT 5.5&lt;/p&gt;
-&lt;p&gt;那么在做一个任务之前，就能判断任务的难易程度，就有价值了。目前共识的简单任务有&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;（简单的）翻译&lt;/li&gt;
-&lt;li&gt;总结&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;慢慢会形成更多的共识&lt;/p&gt;
-&lt;h2 id="结论"&gt;结论&lt;/h2&gt;
-&lt;p&gt;便宜和贵的模型会有各自的生存空间&lt;/p&gt;</description></item><item><title>廉价模型</title><link>https://bobcromwell.github.io/posts/cheap_model/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://bobcromwell.github.io/posts/cheap_model/</guid><description>&lt;p&gt;之前有一种说法是“要用最贵的模型”，比如 Anthropic 的 Opus&lt;/p&gt;
-&lt;p&gt;原因：最贵的模型 = 最聪明的模型&lt;/p&gt;
-&lt;p&gt;进一步说：针对某一个任务，最贵的模型一次就能完成。而使用廉价的模型，可能一次做不对，纠正几次之后，付出的时间和 token 成本超过了最贵的模型&lt;/p&gt;
-&lt;p&gt;而使用最贵的模型，就会承担&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;贵&lt;/li&gt;
-&lt;li&gt;慢&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;但近期使用 DeepSeekV4Flash， 让我对这个观点有所反思，很多简单的任务（改 Emacs 配置、写一些 Python 脚本等）都能完成，且很快、很便宜&lt;/p&gt;
-&lt;p&gt;即使是不需要人参与的任务，需求也是&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;对&lt;/li&gt;
-&lt;li&gt;省&lt;/li&gt;
-&lt;li&gt;快&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;只是现在便宜模型的能力追到了一个新的 baseline&lt;/p&gt;
-&lt;p&gt;但之后用 DeepSeekV4Flash 修改 OpenClaw 的配置，错了两次。这时就会觉得还不如一开始就用 GPT 5.5&lt;/p&gt;
-&lt;p&gt;那么在做一个任务之前，就能判断任务的难易程度，就有价值了。目前共识的简单任务有&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;（简单的）翻译&lt;/li&gt;
-&lt;li&gt;总结&lt;/li&gt;
-&lt;/ol&gt;</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on 田宝明的博客</title><link>https://bobcromwell.github.io/posts/</link><description>Recent content in Posts on 田宝明的博客</description><generator>Hugo</generator><language>zh-Hans</language><atom:link href="https://bobcromwell.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>昂贵模型 v.s. 廉价模型</title><link>https://bobcromwell.github.io/posts/expensive_or_cheap_model/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://bobcromwell.github.io/posts/expensive_or_cheap_model/</guid><description>&lt;p>&lt;img loading="lazy" src="https://bobcromwell.github.io/images/expensive-model-comparison.jpg">&lt;/p>
+&lt;h2 id="之前的说法">之前的说法&lt;/h2>
+&lt;p>之前有一种说法是“要用最贵的模型”，比如 Anthropic 的 Opus&lt;/p>
+&lt;p>原因：最贵的模型 = 最聪明的模型&lt;/p>
+&lt;p>进一步说：针对某一个任务，最贵的模型一次就能完成。而使用廉价的模型，可能一次做不对，纠正几次之后，付出的时间和 token 成本超过了最贵的模型&lt;/p>
+&lt;p>而使用最贵的模型，就会承担&lt;/p>
+&lt;ol>
+&lt;li>贵&lt;/li>
+&lt;li>慢&lt;/li>
+&lt;/ol>
+&lt;h2 id="最近的感受">最近的感受&lt;/h2>
+&lt;p>但近期使用 DeepSeekV4Flash， 让我对这个观点有所反思，很多简单的任务（改 Emacs 配置、写一些 Python 脚本等）都能完成，且很快、很便宜&lt;/p>
+&lt;h2 id="思考">思考&lt;/h2>
+&lt;p>即使是不需要人参与的任务，需求也是&lt;/p>
+&lt;ol>
+&lt;li>对&lt;/li>
+&lt;li>省&lt;/li>
+&lt;li>快&lt;/li>
+&lt;/ol>
+&lt;p>只是现在便宜模型的能力追到了一个新的 baseline&lt;/p>
+&lt;p>但之后用 DeepSeekV4Flash 修改 OpenClaw 的配置，错了两次。这时就会觉得还不如一开始就用 GPT 5.5&lt;/p>
+&lt;p>那么在做一个任务之前，就能判断任务的难易程度，就有价值了。目前共识的简单任务有&lt;/p>
+&lt;ol>
+&lt;li>（简单的）翻译&lt;/li>
+&lt;li>总结&lt;/li>
+&lt;/ol>
+&lt;p>慢慢会形成更多的共识&lt;/p>
+&lt;h2 id="结论">结论&lt;/h2>
+&lt;p>便宜和贵的模型会有各自的生存空间&lt;/p></description></item></channel></rss>
